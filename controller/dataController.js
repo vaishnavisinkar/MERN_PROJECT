@@ -148,17 +148,16 @@ export const getData = async (req, res) => {
   }
 
   try {
-
-    const statisticsData = await statistics({ query: { month } });
-
-    const barChartData = await getBarChart({ query: { month } });
-    const pieChartData = await getPieChart({ query: { month } });
-
+    const statisticsData = await axios.get(`http://localhost:8001/api/product/getStatistics?month=${month}`);
+    const barChartData = await axios.get(`http://localhost:8001/api/product/getBarChart?month=${month}`);
+    const pieChartData = await axios.get(`http://localhost:8001/api/product/getPieChart?month=${month}`);
+    
+    console.log("this is data :: ", statisticsData, barChartData, pieChartData)
 
     const combinedData = {
-      statistics: statisticsData,
-      barChart: barChartData,
-      pieChart: pieChartData
+      statistics: statisticsData.data,
+      barChart: barChartData.data,
+      pieChart: pieChartData.data
     };
 
     return res.status(200).json(combinedData);
